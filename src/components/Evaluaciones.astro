@@ -1,0 +1,80 @@
+---
+// src/components/gestion-personal/Evaluaciones.astro
+import "../styles/global.css";
+const evaluaciones = [
+  {
+    empleado: "Juan Pérez",
+    fecha: "2023-06-15",
+    puntaje: 85,
+    comentarios: "Buen desempeño en clase"
+  },
+  {
+    empleado: "María García",
+    fecha: "2023-06-15",
+    puntaje: 92,
+    comentarios: "Excelente gestión y liderazgo"
+  }
+];
+---
+
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+  <div class="p-4 border-b">
+    <div class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800">Evaluaciones de Desempeño</h2>
+      <button id="btnNuevaEvaluacion" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+        Nueva Evaluación
+      </button>
+    </div>
+  </div>
+  <div class="p-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      {evaluaciones.map((evaluacion) => (
+        <div class="border rounded-lg p-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-medium text-gray-900">{evaluacion.empleado}</h3>
+              <p class="text-sm text-gray-500">{evaluacion.fecha}</p>
+            </div>
+            <span class={`px-2 py-1 text-xs font-semibold rounded-full 
+              ${evaluacion.puntaje >= 80 ? 'bg-green-100 text-green-800' :
+              evaluacion.puntaje >= 60 ? 'bg-yellow-100 text-yellow-800' :
+              'bg-red-100 text-red-800'}`}>
+              {evaluacion.puntaje}/100
+            </span>
+          </div>
+          <p class="mt-2 text-sm text-gray-600">{evaluacion.comentarios}</p>
+          <div class="mt-4 flex justify-end space-x-2">
+            <button class="btn-ver-detalles text-sm text-blue-600 hover:text-blue-800" data-empleado={evaluacion.empleado}>Ver Detalles</button>
+            <button class="btn-editar-evaluacion text-sm text-gray-600 hover:text-gray-800" data-empleado={evaluacion.empleado}>Editar</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnNuevaEvaluacion = document.getElementById('btnNuevaEvaluacion');
+    const btnsVerDetalles = document.querySelectorAll('.btn-ver-detalles');
+    const btnsEditar = document.querySelectorAll('.btn-editar-evaluacion');
+
+    btnNuevaEvaluacion?.addEventListener('click', () => {
+      alert('Crear nueva evaluación');
+    });
+
+    btnsVerDetalles.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const empleado = (e.target as HTMLElement).getAttribute('data-empleado');
+        alert(`Ver detalles de ${empleado}`);
+      });
+    });
+
+    btnsEditar.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const empleado = (e.target as HTMLElement).getAttribute('data-empleado');
+        alert(`Editar evaluación de ${empleado}`);
+      });
+    });
+  });
+</script>

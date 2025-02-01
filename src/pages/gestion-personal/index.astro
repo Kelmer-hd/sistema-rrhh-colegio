@@ -1,0 +1,119 @@
+---
+// src/pages/gestion-personal/index.astro
+import Layout from '../../layouts/Layout.astro';
+import TablaEmpleados from '../../components/TablaEmpleados.astro';
+import Evaluaciones from '../../components/Evaluaciones.astro';
+import FormularioEmpleado from '../../components/FormularioEmpleado.astro';
+
+// Estado inicial de las pestañas
+// Definir el tipo para las pestañas
+type Tab = {
+  id: 'empleados' | 'evaluaciones' | 'postulantes';
+  nombre: string;
+  activo: boolean;
+};
+
+// Estado inicial de las pestañas
+const tabs: Tab[] = [
+  { id: 'empleados', nombre: 'Empleados', activo: true },
+  { id: 'evaluaciones', nombre: 'Evaluaciones', activo: false },
+  { id: 'postulantes', nombre: 'Postulantes', activo: false }
+];
+---
+
+<Layout>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-6">Gestión de Personal</h1>
+    
+    <!-- Navegación por pestañas -->
+    <div class="border-b border-gray-200 mb-6">
+      <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+        {tabs.map(tab => (
+          <button
+            id={`tab-${tab.id}`}
+            class={`py-4 px-1 border-b-2 font-medium text-sm
+              ${tab.activo 
+                ? 'border-indigo-500 text-indigo-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+          >
+            {tab.nombre}
+          </button>
+        ))}
+      </nav>
+    </div>
+
+    <!-- Contenido de las pestañas -->
+    <div id="tab-content-empleados" class="tab-content">
+      <TablaEmpleados />
+    </div>
+
+    <div id="tab-content-evaluaciones" class="tab-content hidden">
+      <Evaluaciones />
+    </div>
+
+    <div id="tab-content-postulantes" class="tab-content hidden">
+      <!-- Aquí irá el componente de postulantes cuando lo creemos -->
+      <div class="bg-white shadow-md rounded-lg p-6">
+        <h2 class="text-xl font-semibold text-gray-800">Postulantes</h2>
+        <p class="text-gray-600 mt-2">Sección en desarrollo...</p>
+      </div>
+    </div>
+
+    <!-- Modal del formulario (inicialmente oculto) -->
+    <div id="modal-container" class="hidden">
+      <FormularioEmpleado />
+    </div>
+  </div>
+</Layout>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Obtener referencias a los elementos
+      const tabButtons = document.querySelectorAll<HTMLButtonElement>('button[id^="tab-"]');
+      const tabContents = document.querySelectorAll<HTMLElement>('.tab-content');
+      const modalContainer = document.getElementById('modal-container');
+  
+      // Función para mostrar una pestaña con tipo explícito
+      function showTab(tabId: 'empleados' | 'evaluaciones' | 'postulantes'): void {
+        // Ocultar todos los contenidos
+        tabContents.forEach(content => {
+          content.classList.add('hidden');
+        });
+  
+        // Desactivar todos los botones
+        tabButtons.forEach(button => {
+          button.classList.remove('border-indigo-500', 'text-indigo-600');
+          button.classList.add('border-transparent', 'text-gray-500');
+        });
+  
+        // Mostrar el contenido seleccionado
+        const selectedContent = document.getElementById(`tab-content-${tabId}`);
+        selectedContent?.classList.remove('hidden');
+  
+        // Activar el botón seleccionado
+        const selectedButton = document.getElementById(`tab-${tabId}`);
+        selectedButton?.classList.add('border-indigo-500', 'text-indigo-600');
+        selectedButton?.classList.remove('border-transparent', 'text-gray-500');
+      }
+  
+      // Agregar listeners a los botones de las pestañas
+      tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const tabId = button.id.replace('tab-', '') as 'empleados' | 'evaluaciones' | 'postulantes';
+          showTab(tabId);
+        });
+      });
+  
+      // Listener para el botón de nuevo empleado
+      const btnNuevoEmpleado = document.getElementById('btnNuevoEmpleado');
+      btnNuevoEmpleado?.addEventListener('click', () => {
+        modalContainer?.classList.remove('hidden');
+      });
+  
+      // Listener para cerrar el modal
+      const btnCancelar = document.getElementById('btnCancelar');
+      btnCancelar?.addEventListener('click', () => {
+        modalContainer?.classList.add('hidden');
+      });
+    });
+  </script>

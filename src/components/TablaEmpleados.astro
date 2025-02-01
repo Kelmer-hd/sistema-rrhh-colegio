@@ -1,0 +1,102 @@
+---
+// src/components/gestion-personal/TablaEmpleados.astro
+import "../styles/global.css";
+const empleados = [
+  {
+    id: "EMP001",
+    nombre: "Juan Pérez",
+    cargo: "Profesor de Matemáticas",
+    departamento: "Secundaria",
+    estado: "activo"
+  },
+  {
+    id: "EMP002",
+    nombre: "María García",
+    cargo: "Coordinadora Académica",
+    departamento: "Administración",
+    estado: "activo"
+  },
+  {
+    id: "EMP003",
+    nombre: "Pedro Rodríguez",
+    cargo: "Profesor de Ciencias",
+    departamento: "Secundaria",
+    estado: "inactivo"
+  }
+];
+---
+
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+  <div class="p-4 border-b">
+    <div class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800">Lista de Empleados</h2>
+      <button id="btnNuevoEmpleado" class="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600">
+        Nuevo Empleado
+      </button>
+    </div>
+  </div>
+  
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cargo</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Departamento</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Estado</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {empleados.map((empleado) => (
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{empleado.id}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{empleado.nombre}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{empleado.cargo}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{empleado.departamento}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${empleado.estado === 'activo' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'}`}>
+                {empleado.estado}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button class="btn-editar text-indigo-600 hover:text-indigo-900 mr-3" data-id={empleado.id}>Editar</button>
+              <button class="btn-eliminar text-red-600 hover:text-red-900" data-id={empleado.id}>Eliminar</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+  // En Astro, el código del cliente debe ir dentro de una etiqueta script con el atributo client
+  document.addEventListener('DOMContentLoaded', () => {
+    const btnNuevoEmpleado = document.getElementById('btnNuevoEmpleado');
+    const btnsEditar = document.querySelectorAll('.btn-editar');
+    const btnsEliminar = document.querySelectorAll('.btn-eliminar');
+
+    btnNuevoEmpleado?.addEventListener('click', () => {
+      alert('Nuevo empleado');
+      // Aquí iría la lógica para abrir el formulario
+    });
+
+    btnsEditar.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.target as HTMLElement).getAttribute('data-id');
+        alert(`Editar empleado ${id}`);
+        // Aquí iría la lógica para editar
+      });
+    });
+
+    btnsEliminar.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const id = (e.target as HTMLElement).getAttribute('data-id');
+        alert(`Eliminar empleado ${id}`);
+        // Aquí iría la lógica para eliminar
+      });
+    });
+  });
+</script>

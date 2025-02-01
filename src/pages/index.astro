@@ -1,11 +1,32 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import DashboardCard from '../components/DashboardCard.astro';
+import "../styles/global.css";
 ---
 
 <Layout>
-	<Welcome />
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <h1 class="text-3xl font-bold text-gray-900 mb-8">Dashboard SIGRH-EDU</h1>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <DashboardCard 
+        titulo="Gestión de Personal"
+        descripcion="Administra empleados, evaluaciones y postulantes"
+        enlace="/gestion-personal"
+        icono="👥"
+      />
+      <DashboardCard 
+        titulo="Desarrollo Profesional"
+        descripcion="Gestiona capacitaciones y certificaciones"
+        enlace="/desarrollo"
+        icono="📚"
+      />
+      <DashboardCard 
+        titulo="Calendario"
+        descripcion="Organiza eventos y reuniones"
+        enlace="/calendario"
+        icono="📅"
+      />
+    </div>
+  </div>
 </Layout>

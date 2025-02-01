@@ -1,0 +1,18 @@
+---
+// src/components/DashboardCard.astro
+const { titulo, descripcion, enlace, icono } = Astro.props;
+---
+
+<a href={enlace} class="block bg-white overflow-hidden shadow-lg rounded-lg hover:shadow-xl transition-shadow duration-300">
+  <div class="p-6">
+    <div class="flex items-center">
+      <div class="flex-shrink-0">
+        <span class="text-4xl">{icono}</span>
+      </div>
+      <div class="ml-4">
+        <h3 class="text-xl font-medium text-gray-900">{titulo}</h3>
+        <p class="mt-1 text-gray-500">{descripcion}</p>
+      </div>
+    </div>
+  </div>
+</a>
