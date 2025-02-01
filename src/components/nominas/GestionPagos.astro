@@ -1,0 +1,94 @@
+---
+// src/components/nominas/GestionPagos.astro
+import "../../styles/global.css";
+
+const pagos = [
+  {
+    id: "P001",
+    empleado: "Juan Pérez",
+    cargo: "Profesor de Matemáticas",
+    periodo: "Enero 2024",
+    salarioBase: 3500,
+    bonificaciones: 200,
+    descuentos: 350,
+    total: 3350,
+    estado: "pagado",
+    fechaPago: "2024-01-30"
+  },
+  {
+    id: "P002",
+    empleado: "María García",
+    cargo: "Coordinadora",
+    periodo: "Enero 2024",
+    salarioBase: 4200,
+    bonificaciones: 300,
+    descuentos: 420,
+    total: 4080,
+    estado: "pendiente",
+    fechaPago: "2024-01-30"
+  }
+];
+---
+
+<div class="bg-white shadow-md rounded-lg overflow-hidden">
+  <!-- Header -->
+  <div class="p-4 border-b">
+    <div class="flex justify-between items-center">
+      <h2 class="text-xl font-semibold text-gray-800">Gestión de Pagos</h2>
+      <div class="flex gap-2">
+        <select class="rounded-lg border-gray-300 text-sm">
+          <option>Enero 2024</option>
+          <option>Febrero 2024</option>
+        </select>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          Procesar Nómina
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Tabla de Pagos -->
+  <div class="overflow-x-auto">
+    <table class="min-w-full divide-y divide-gray-200">
+      <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">ID</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Empleado</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Salario Base</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Bonificaciones</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Descuentos</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Total</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Estado</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="bg-white divide-y divide-gray-200">
+        {pagos.map(pago => (
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{pago.id}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <div>
+                <div class="text-sm font-medium text-gray-900">{pago.empleado}</div>
+                <div class="text-sm text-gray-500">{pago.cargo}</div>
+              </div>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/. {pago.salarioBase}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/. {pago.bonificaciones}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">S/. {pago.descuentos}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">S/. {pago.total}</td>
+            <td class="px-6 py-4 whitespace-nowrap">
+              <span class={`px-2 py-1 text-xs font-semibold rounded-full
+                ${pago.estado === 'pagado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                {pago.estado}
+              </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <button class="text-indigo-600 hover:text-indigo-900 mr-3">Ver Detalle</button>
+              <button class="text-blue-600 hover:text-blue-900">Boleta</button>
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
+</div>

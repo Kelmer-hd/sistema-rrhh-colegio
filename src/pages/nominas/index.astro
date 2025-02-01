@@ -1,0 +1,142 @@
+---
+// src/pages/nominas/index.astro
+import Layout from "../../layouts/Layout.astro";
+import "../../styles/global.css";
+import Dashboard from "../../components/nominas/Dashboard.astro";
+import GestionPagos from "../../components/nominas/GestionPagos.astro";
+import BeneficiosDescuentos from "../../components/nominas/BeneficiosDescuentos.astro";
+import Reportes from "../../components/nominas/Reportes.astro";
+
+type Tab = {
+    id: "dashboard" | "pagos" | "beneficios" | "reportes";
+    nombre: string;
+    icono: string;
+    activo: boolean;
+};
+
+const tabs: Tab[] = [
+    {
+        id: "dashboard",
+        nombre: "Dashboard",
+        icono: "📊",
+        activo: true,
+    },
+    {
+        id: "pagos",
+        nombre: "Gestión de Pagos",
+        icono: "💰",
+        activo: false,
+    },
+    {
+        id: "beneficios",
+        nombre: "Beneficios y Descuentos",
+        icono: "📋",
+        activo: false,
+    },
+    {
+        id: "reportes",
+        nombre: "Reportes de Nómina",
+        icono: "📈",
+        activo: false,
+    },
+];
+---
+
+<Layout>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="flex justify-between items-center mb-6">
+            <h1 class="text-3xl font-bold text-gray-900">Nóminas</h1>
+            <button
+                id="btnNuevoPago"
+                class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2"
+            >
+                <span>+</span> Nuevo Pago
+            </button>
+        </div>
+
+        <!-- Navegación por pestañas -->
+        <div class="border-b border-gray-200 mb-6">
+            <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+                {
+                    tabs.map((tab) => (
+                        <button
+                            id={`tab-${tab.id}`}
+                            class={`py-4 px-1 border-b-2 font-medium text-sm inline-flex items-center gap-2
+              ${
+                  tab.activo
+                      ? "border-blue-500 text-blue-600"
+                      : "border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300"
+              }`}
+                        >
+                            <span>{tab.icono}</span>
+                            {tab.nombre}
+                        </button>
+                    ))
+                }
+            </nav>
+        </div>
+
+        <div id="tab-content-dashboard" class="tab-content">
+            <Dashboard />
+        </div>
+
+        <div id="tab-content-pagos" class="tab-content hidden">
+            <GestionPagos />
+        </div>
+
+        <div id="tab-content-beneficios" class="tab-content hidden">
+            <BeneficiosDescuentos />
+        </div>
+
+        <div id="tab-content-reportes" class="tab-content hidden">
+            <Reportes />
+        </div>
+    </div>
+</Layout>
+
+<script>
+    type TabId = "dashboard" | "pagos" | "beneficios" | "reportes";
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const tabButtons =
+            document.querySelectorAll<HTMLButtonElement>('button[id^="tab-"]');
+        const tabContents =
+            document.querySelectorAll<HTMLElement>(".tab-content");
+        const modalContainer = document.getElementById("modal-container");
+        const btnNuevoPago = document.getElementById("btnNuevoPago");
+
+        function showTab(tabId: TabId): void {
+            tabContents.forEach((content) => {
+                content.classList.add("hidden");
+            });
+
+            tabButtons.forEach((button) => {
+                button.classList.remove("border-blue-500", "text-blue-600");
+                button.classList.add("border-transparent", "text-gray-500");
+            });
+
+            const selectedContent = document.getElementById(
+                `tab-content-${tabId}`,
+            );
+            selectedContent?.classList.remove("hidden");
+
+            const selectedButton = document.getElementById(`tab-${tabId}`);
+            selectedButton?.classList.add("border-blue-500", "text-blue-600");
+            selectedButton?.classList.remove(
+                "border-transparent",
+                "text-gray-500",
+            );
+        }
+
+        tabButtons.forEach((button) => {
+            button.addEventListener("click", () => {
+                const tabId = button.id.replace("tab-", "") as TabId;
+                showTab(tabId);
+            });
+        });
+
+        btnNuevoPago?.addEventListener("click", () => {
+            modalContainer?.classList.remove("hidden");
+        });
+    });
+</script>

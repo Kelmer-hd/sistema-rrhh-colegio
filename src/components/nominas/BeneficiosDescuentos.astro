@@ -1,0 +1,123 @@
+---
+// src/components/nominas/BeneficiosDescuentos.astro
+import "../../styles/global.css";
+
+const beneficios = [
+  {
+    id: "B001",
+    nombre: "Bonificación por Desempeño",
+    tipo: "porcentaje",
+    valor: 10,
+    aplicaA: "todos",
+    estado: "activo"
+  },
+  {
+    id: "B002",
+    nombre: "Asignación Familiar",
+    tipo: "monto",
+    valor: 100,
+    aplicaA: "con_hijos",
+    estado: "activo"
+  }
+];
+
+const descuentos = [
+  {
+    id: "D001",
+    nombre: "AFP",
+    tipo: "porcentaje",
+    valor: 10,
+    obligatorio: true,
+    estado: "activo"
+  },
+  {
+    id: "D002",
+    nombre: "Seguro Médico",
+    tipo: "monto",
+    valor: 150,
+    obligatorio: true,
+    estado: "activo"
+  }
+];
+---
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+  <!-- Beneficios -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="p-4 border-b">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">Beneficios</h2>
+        <button class="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700">
+          Nuevo Beneficio
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="space-y-4">
+        {beneficios.map(beneficio => (
+          <div class="border rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-900">{beneficio.nombre}</h3>
+                <p class="text-sm text-gray-500 mt-1">
+                  {beneficio.tipo === 'porcentaje' ? `${beneficio.valor}%` : `S/. ${beneficio.valor}`}
+                </p>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class={`px-2 py-1 text-xs font-semibold rounded-full
+                  ${beneficio.estado === 'activo' ? 'bg-green-100 text-green-800' : 'bg-gray-100 text-gray-800'}`}>
+                  {beneficio.estado}
+                </span>
+                <button class="text-gray-400 hover:text-gray-500">
+                  <span>⋮</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+
+  <!-- Descuentos -->
+  <div class="bg-white shadow-md rounded-lg overflow-hidden">
+    <div class="p-4 border-b">
+      <div class="flex justify-between items-center">
+        <h2 class="text-xl font-semibold text-gray-800">Descuentos</h2>
+        <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+          Nuevo Descuento
+        </button>
+      </div>
+    </div>
+
+    <div class="p-4">
+      <div class="space-y-4">
+        {descuentos.map(descuento => (
+          <div class="border rounded-lg p-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <h3 class="font-medium text-gray-900">{descuento.nombre}</h3>
+                <p class="text-sm text-gray-500 mt-1">
+                  {descuento.tipo === 'porcentaje' ? `${descuento.valor}%` : `S/. ${descuento.valor}`}
+                </p>
+                <span class="text-xs text-gray-500">
+                  {descuento.obligatorio ? 'Obligatorio' : 'Opcional'}
+                </span>
+              </div>
+              <div class="flex items-center gap-2">
+                <span class={`px-2 py-1 text-xs font-semibold rounded-full
+                  ${descuento.estado === 'activo' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'}`}>
+                  {descuento.estado}
+                </span>
+                <button class="text-gray-400 hover:text-gray-500">
+                  <span>⋮</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

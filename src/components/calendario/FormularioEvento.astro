@@ -1,0 +1,190 @@
+---
+// src/components/calendario/FormularioEvento.astro
+
+import "../../styles/global.css";
+
+const tiposEvento = [
+  { id: 'reunion', nombre: 'Reunión' },
+  { id: 'capacitacion', nombre: 'Capacitación' },
+  { id: 'otro', nombre: 'Otro' }
+];
+
+const empleados = [
+  { id: 1, nombre: 'Juan Pérez' },
+  { id: 2, nombre: 'María García' },
+  { id: 3, nombre: 'Ana López' }
+];
+---
+
+<div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center" id="modalEvento">
+  <div class="relative w-full max-w-2xl mx-4">
+    <div class="bg-white rounded-xl shadow-2xl">
+      <!-- Header -->
+      <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+        <div class="flex items-center gap-3">
+          <div class="bg-blue-50 p-2 rounded-lg">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-blue-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+            </svg>
+          </div>
+          <h3 class="text-lg font-semibold text-gray-900">Nuevo Evento</h3>
+        </div>
+        <button id="btnCerrar" class="text-gray-400 hover:text-gray-500">
+          <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Formulario -->
+      <form id="eventoForm" class="p-6">
+        <div class="grid grid-cols-1 gap-6">
+          <!-- Título -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Título del Evento</label>
+            <input
+              type="text"
+              name="titulo"
+              required
+              class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            />
+          </div>
+
+          <!-- Tipo de Evento -->
+          <div>
+            <label class="block text-sm font-medium text-gray-700">Tipo de Evento</label>
+            <select
+              name="tipo"
+              required
+              class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            >
+              {tiposEvento.map(tipo => (
+                <option value={tipo.id}>{tipo.nombre}</option>
+              ))}
+            </select>
+          </div>
+
+          <!-- Fecha y Hora -->
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Fecha</label>
+              <input
+                type="date"
+                name="fecha"
+                required
+                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700">Hora</label>
+                <input
+                  type="time"
+                  name="hora"
+                  required
+                  class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+  
+            <!-- Duración -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Duración</label>
+              <select
+                name="duracion"
+                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              >
+                <option value="0.5">30 minutos</option>
+                <option value="1">1 hora</option>
+                <option value="1.5">1 hora 30 minutos</option>
+                <option value="2">2 horas</option>
+                <option value="3">3 horas</option>
+              </select>
+            </div>
+  
+            <!-- Lugar -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Lugar</label>
+              <input
+                type="text"
+                name="lugar"
+                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                placeholder="Ej: Sala de Reuniones"
+              />
+            </div>
+  
+            <!-- Participantes -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Participantes</label>
+              <div class="mt-1 space-y-2">
+                {empleados.map(emp => (
+                  <label class="flex items-center gap-2">
+                    <input type="checkbox" name="participantes" value={emp.id} class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    <span class="text-sm text-gray-700">{emp.nombre}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+  
+            <!-- Notas -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Notas adicionales</label>
+              <textarea
+                name="notas"
+                rows="3"
+                class="mt-1 block w-full rounded-lg border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              ></textarea>
+            </div>
+          </div>
+  
+          <!-- Botones de acción -->
+          <div class="mt-6 flex items-center justify-end gap-x-4">
+            <button
+              type="button"
+              id="btnCancelar"
+              class="px-4 py-2 text-sm font-semibold text-gray-700 hover:text-gray-900"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Guardar Evento
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('eventoForm') as HTMLFormElement;
+      const modal = document.getElementById('modalEvento');
+      const btnCerrar = document.getElementById('btnCerrar');
+      const btnCancelar = document.getElementById('btnCancelar');
+  
+      function cerrarModal() {
+        modal?.classList.add('hidden');
+        form?.reset();
+      }
+  
+      form?.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        const datos = Object.fromEntries(formData);
+        console.log('Datos del evento:', datos);
+        alert('Evento guardado exitosamente');
+        cerrarModal();
+      });
+  
+      [btnCerrar, btnCancelar].forEach(btn => {
+        btn?.addEventListener('click', cerrarModal);
+      });
+  
+      // Cerrar con ESC
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') cerrarModal();
+      });
+    });
+  </script>

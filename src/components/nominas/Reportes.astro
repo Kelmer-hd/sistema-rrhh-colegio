@@ -1,0 +1,91 @@
+---
+// src/components/nominas/Reportes.astro
+import "../../styles/global.css";
+
+const reportes = [
+  {
+    id: "R001",
+    titulo: "Resumen de Nómina Mensual",
+    descripcion: "Reporte detallado de todos los pagos realizados en el mes",
+    periodo: "Enero 2024",
+    tipo: "mensual",
+    formato: "PDF"
+  },
+  {
+    id: "R002",
+    titulo: "Análisis de Beneficios",
+    descripcion: "Desglose de beneficios otorgados por empleado",
+    periodo: "Enero 2024",
+    tipo: "mensual",
+    formato: "Excel"
+  },
+  {
+    id: "R003",
+    titulo: "Declaración de Impuestos",
+    descripcion: "Reporte para declaración de impuestos y contribuciones",
+    periodo: "Enero 2024",
+    tipo: "mensual",
+    formato: "PDF"
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Filtros -->
+  <div class="bg-white rounded-lg shadow-md p-4">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Periodo</label>
+        <select class="mt-1 block w-full rounded-lg border-gray-300">
+          <option>Enero 2024</option>
+          <option>Febrero 2024</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Tipo de Reporte</label>
+        <select class="mt-1 block w-full rounded-lg border-gray-300">
+          <option>Todos</option>
+          <option>Nómina</option>
+          <option>Beneficios</option>
+          <option>Impuestos</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-sm font-medium text-gray-700">Formato</label>
+        <select class="mt-1 block w-full rounded-lg border-gray-300">
+          <option>PDF</option>
+          <option>Excel</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lista de Reportes -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {reportes.map(reporte => (
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex justify-between items-start">
+          <div class="flex-1">
+            <h3 class="text-lg font-medium text-gray-900">{reporte.titulo}</h3>
+            <p class="mt-1 text-sm text-gray-500">{reporte.descripcion}</p>
+            <div class="mt-4 flex items-center gap-4">
+              <span class="text-sm text-gray-500">{reporte.periodo}</span>
+              <span class={`px-2 py-1 text-xs font-semibold rounded-full
+                ${reporte.formato === 'PDF' ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800'}`}>
+                {reporte.formato}
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 flex justify-end gap-2">
+          <button class="px-3 py-1 text-sm text-blue-600 hover:text-blue-800">
+            Vista Previa
+          </button>
+          <button class="px-3 py-1 text-sm bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+            Descargar
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>

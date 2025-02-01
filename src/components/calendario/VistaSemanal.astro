@@ -1,0 +1,86 @@
+---
+// src/components/calendario/VistaSemanal.astro
+const horasDia = Array.from({ length: 12 }, (_, i) => i + 8); // 8 AM a 8 PM
+const diasSemana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes'];
+
+// Eventos de ejemplo
+const eventosSemanales = [
+  {
+    dia: 'Lunes',
+    hora: 9,
+    duracion: 2,
+    titulo: 'Reunión de Planificación',
+    tipo: 'reunion'
+  },
+  {
+    dia: 'Miércoles',
+    hora: 14,
+    duracion: 1.5,
+    titulo: 'Capacitación Excel',
+    tipo: 'capacitacion'
+  }
+];
+---
+
+<div class="bg-white rounded-lg shadow overflow-hidden">
+  <!-- Header de la semana -->
+  <div class="p-4 border-b flex justify-between items-center">
+    <h2 class="text-xl font-semibold">Semana del 12 al 16 de Febrero</h2>
+    <div class="flex gap-2">
+      <button class="p-2 hover:bg-gray-100 rounded-lg">
+        <span>←</span>
+      </button>
+      <button class="p-2 hover:bg-gray-100 rounded-lg">
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="flex">
+    <!-- Columna de horas -->
+    <div class="w-20 border-r">
+      <div class="h-12"></div> <!-- Espacio para header de días -->
+      {horasDia.map(hora => (
+        <div class="h-20 border-b flex items-center justify-center">
+          <span class="text-sm text-gray-500">{hora}:00</span>
+        </div>
+      ))}
+    </div>
+
+    <!-- Grid de eventos -->
+    <div class="flex-1 overflow-x-auto">
+      <div class="grid grid-cols-5 min-w-[800px]">
+        <!-- Headers de días -->
+        {diasSemana.map(dia => (
+          <div class="h-12 border-b border-r flex items-center justify-center font-medium">
+            {dia}
+          </div>
+        ))}
+
+        <!-- Celdas de horas por día -->
+        {diasSemana.map(dia => (
+          <div class="border-r">
+            {horasDia.map(hora => (
+              <div class="h-20 border-b relative">
+                {eventosSemanales
+                  .filter(evento => evento.dia === dia && evento.hora === hora)
+                  .map(evento => (
+                    <div 
+                      class={`absolute left-1 right-1 rounded p-1 text-sm
+                        ${evento.tipo === 'reunion' ? 'bg-blue-100 text-blue-800' : 
+                        evento.tipo === 'capacitacion' ? 'bg-green-100 text-green-800' : 
+                        'bg-gray-100 text-gray-800'}`}
+                      style={`height: ${evento.duracion * 5}rem;`}
+                    >
+                      <div class="font-medium">{evento.titulo}</div>
+                      <div class="text-xs">{evento.hora}:00 - {evento.hora + evento.duracion}:00</div>
+                    </div>
+                  ))}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

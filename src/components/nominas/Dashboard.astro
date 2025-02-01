@@ -1,0 +1,144 @@
+---
+// src/components/nominas/Dashboard.astro
+import "../../styles/global.css";
+
+interface EstadisticaCard {
+  titulo: string;
+  valor: string;
+  cambio: number;
+  icono: string;
+  color: string;
+}
+
+const estadisticas: EstadisticaCard[] = [
+  {
+    titulo: "Total Nómina Mensual",
+    valor: "S/. 45,250",
+    cambio: 3.5,
+    icono: "💰",
+    color: "blue"
+  },
+  {
+    titulo: "Empleados Activos",
+    valor: "32",
+    cambio: 2,
+    icono: "👥",
+    color: "green"
+  },
+  {
+    titulo: "Bonificaciones",
+    valor: "S/. 5,800",
+    cambio: -1.2,
+    icono: "⭐",
+    color: "yellow"
+  },
+  {
+    titulo: "Descuentos",
+    valor: "S/. 3,200",
+    cambio: 0.8,
+    icono: "📉",
+    color: "red"
+  }
+];
+
+const datosPagosRecientes = [
+  {
+    empleado: "Juan Pérez",
+    cargo: "Profesor de Matemáticas",
+    fecha: "2024-01-30",
+    monto: 3500,
+    estado: "pagado"
+  },
+  {
+    empleado: "María García",
+    cargo: "Coordinadora",
+    fecha: "2024-01-30",
+    monto: 4200,
+    estado: "pagado"
+  },
+  {
+    empleado: "Carlos López",
+    cargo: "Profesor de Ciencias",
+    fecha: "2024-01-30",
+    monto: 3500,
+    estado: "pendiente"
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    {estadisticas.map(stat => (
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+          <span class="text-2xl">{stat.icono}</span>
+          <span class={`text-sm font-semibold ${stat.cambio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {stat.cambio > 0 ? '+' : ''}{stat.cambio}%
+          </span>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mt-4">{stat.titulo}</h3>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{stat.valor}</p>
+      </div>
+    ))}
+  </div>
+
+  <!-- Gráficos y Tablas -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Gráfico de Distribución -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribución de Nómina</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between mb-1">
+            <span class="text-sm font-medium text-gray-600">Salarios Base</span>
+            <span class="text-sm font-medium text-gray-900">75%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1">
+            <span class="text-sm font-medium text-gray-600">Bonificaciones</span>
+            <span class="text-sm font-medium text-gray-900">15%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-green-600 h-2 rounded-full" style="width: 15%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1">
+            <span class="text-sm font-medium text-gray-600">Horas Extra</span>
+            <span class="text-sm font-medium text-gray-900">10%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-yellow-600 h-2 rounded-full" style="width: 10%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagos Recientes -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Pagos Recientes</h3>
+      <div class="space-y-4">
+        {datosPagosRecientes.map(pago => (
+          <div class="flex items-center justify-between p-4 border rounded-lg">
+            <div>
+              <p class="font-medium text-gray-900">{pago.empleado}</p>
+              <p class="text-sm text-gray-500">{pago.cargo}</p>
+            </div>
+            <div class="text-right">
+              <p class="font-medium text-gray-900">S/. {pago.monto}</p>
+              <span class={`inline-flex px-2 py-1 text-xs font-semibold rounded-full 
+                ${pago.estado === 'pagado' ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}`}>
+                {pago.estado}
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

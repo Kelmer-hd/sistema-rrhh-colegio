@@ -1,0 +1,104 @@
+---
+// src/components/calendario/VistaMensual.astro
+import "../../styles/global.css";
+
+interface Evento {
+  titulo: string;
+  hora: string;
+  tipo: string;
+}
+
+const diasSemana = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+const mesActual = new Date();
+
+function getDiasMes() {
+  const primerDia = new Date(mesActual.getFullYear(), mesActual.getMonth(), 1);
+  const ultimoDia = new Date(mesActual.getFullYear(), mesActual.getMonth() + 1, 0);
+  
+  const dias = [];
+  
+  for (let i = 0; i < primerDia.getDay(); i++) {
+    dias.push({ dia: '', eventos: [] as Evento[] });
+  }
+  
+  for (let i = 1; i <= ultimoDia.getDate(); i++) {
+    const eventosDelDia: Evento[] = [];
+    
+    if (i === 15) {
+      eventosDelDia.push({ 
+        titulo: 'Reunión de Equipo', 
+        hora: '09:00', 
+        tipo: 'reunion' 
+      });
+    }
+    
+    if (i === 20) {
+      eventosDelDia.push({ 
+        titulo: 'Capacitación', 
+        hora: '14:00', 
+        tipo: 'capacitacion' 
+      });
+    }
+    
+    dias.push({
+      dia: i,
+      eventos: eventosDelDia
+    });
+  }
+  
+  return dias;
+}
+
+const diasMes = getDiasMes();
+---
+
+<div class="bg-white rounded-lg shadow">
+  <!-- Header del Calendario -->
+  <div class="p-4 border-b flex justify-between items-center">
+    <h2 class="text-xl font-semibold">
+      {mesActual.toLocaleString('es', { month: 'long', year: 'numeric' })}
+    </h2>
+    <div class="flex gap-2">
+      <button class="p-2 hover:bg-gray-100 rounded-lg">
+        <span>←</span>
+      </button>
+      <button class="p-2 hover:bg-gray-100 rounded-lg">
+        <span>→</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Días de la semana -->
+  <div class="grid grid-cols-7 gap-px bg-gray-200">
+    {diasSemana.map(dia => (
+      <div class="bg-gray-50 p-2 text-center text-sm font-medium text-gray-500">
+        {dia}
+      </div>
+    ))}
+  </div>
+
+  <!-- Días del mes -->
+  <div class="grid grid-cols-7 gap-px bg-gray-200">
+    {diasMes.map(({ dia, eventos }) => (
+      <div class="min-h-32 bg-white p-2">
+        {dia && (
+          <div>
+            <span class={`text-sm ${eventos.length > 0 ? 'font-semibold' : ''}`}>
+              {dia}
+            </span>
+            <div class="mt-1 space-y-1">
+              {eventos.map(evento => (
+                <div class={`text-xs p-1 rounded truncate
+                  ${evento.tipo === 'reunion' ? 'bg-blue-100 text-blue-800' : 
+                  evento.tipo === 'capacitacion' ? 'bg-green-100 text-green-800' : 
+                  'bg-gray-100 text-gray-800'}`}>
+                  {evento.hora} - {evento.titulo}
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    ))}
+  </div>
+</div>
