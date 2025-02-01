@@ -1,0 +1,124 @@
+---
+// src/components/configuracion/Notificaciones.astro
+
+import "../../styles/global.css";
+
+const tiposNotificacion = [
+  {
+    id: 'email',
+    nombre: 'Correo Electrónico',
+    descripcion: 'Notificaciones vía email',
+    activo: true
+  },
+  {
+    id: 'sistema',
+    nombre: 'Sistema',
+    descripcion: 'Notificaciones dentro del sistema',
+    activo: true
+  }
+];
+
+const eventosNotificables = [
+  {
+    categoria: 'Personal',
+    eventos: [
+      {
+        id: 'nuevo_empleado',
+        nombre: 'Nuevo Empleado',
+        descripcion: 'Cuando se registra un nuevo empleado',
+        email: true,
+        sistema: true
+      },
+      {
+        id: 'evaluacion_pendiente',
+        nombre: 'Evaluación Pendiente',
+        descripcion: 'Cuando hay una evaluación por realizar',
+        email: true,
+        sistema: true
+      }
+    ]
+  },
+  {
+    categoria: 'Nómina',
+    eventos: [
+      {
+        id: 'pago_realizado',
+        nombre: 'Pago Realizado',
+        descripcion: 'Cuando se procesa un pago de nómina',
+        email: true,
+        sistema: true
+      },
+      {
+        id: 'beneficio_asignado',
+        nombre: 'Beneficio Asignado',
+        descripcion: 'Cuando se asigna un nuevo beneficio',
+        email: false,
+        sistema: true
+      }
+    ]
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Tipos de Notificación -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Canales de Notificación</h2>
+    <div class="space-y-4">
+      {tiposNotificacion.map(tipo => (
+        <div class="flex items-center justify-between py-4 border-b">
+          <div class="flex-1">
+            <h3 class="text-sm font-medium text-gray-900">{tipo.nombre}</h3>
+            <p class="text-sm text-gray-500">{tipo.descripcion}</p>
+          </div>
+          <div class="ml-4">
+            <label class="relative inline-flex items-center cursor-pointer">
+              <input type="checkbox" checked={tipo.activo} class="sr-only peer">
+              <div class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Eventos Notificables -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Eventos Notificables</h2>
+    <div class="space-y-6">
+      {eventosNotificables.map(categoria => (
+        <div>
+          <h3 class="text-md font-medium text-gray-900 mb-3">{categoria.categoria}</h3>
+          <div class="space-y-4">
+            {categoria.eventos.map(evento => (
+              <div class="flex items-center justify-between py-4 border-b">
+                <div class="flex-1">
+                  <h4 class="text-sm font-medium text-gray-900">{evento.nombre}</h4>
+                  <p class="text-sm text-gray-500">{evento.descripcion}</p>
+                </div>
+                <div class="flex items-center gap-4">
+                  <label class="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      checked={evento.email}
+                      class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    >
+                    <span class="text-sm text-gray-600">Email</span>
+                  </label>
+                  <label class="flex items-center gap-2">
+                    <input 
+                      type="checkbox" 
+                      checked={evento.sistema}
+                      class="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    >
+                    <span class="text-sm text-gray-600">Sistema</span>
+                  </label>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</div>

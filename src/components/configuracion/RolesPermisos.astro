@@ -1,0 +1,106 @@
+---
+// src/components/configuracion/RolesPermisos.astro
+import "../../styles/global.css";
+
+const roles = [
+  {
+    id: 'admin',
+    nombre: 'Administrador',
+    descripcion: 'Acceso completo al sistema',
+    usuarios: 2
+  },
+  {
+    id: 'rrhh',
+    nombre: 'Recursos Humanos',
+    descripcion: 'Gestión de personal y evaluaciones',
+    usuarios: 5
+  },
+  {
+    id: 'supervisor',
+    nombre: 'Supervisor',
+    descripcion: 'Gestión de equipos y evaluaciones',
+    usuarios: 8
+  }
+];
+
+const modulos = [
+  {
+    id: 'personal',
+    nombre: 'Gestión de Personal',
+    permisos: ['ver', 'crear', 'editar', 'eliminar']
+  },
+  {
+    id: 'nominas',
+    nombre: 'Nóminas',
+    permisos: ['ver', 'procesar', 'aprobar']
+  },
+  {
+    id: 'evaluaciones',
+    nombre: 'Evaluaciones',
+    permisos: ['ver', 'crear', 'evaluar']
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Lista de Roles -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-lg font-medium text-gray-900">Roles del Sistema</h2>
+      <button class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+        Nuevo Rol
+      </button>
+    </div>
+    <div class="space-y-4">
+      {roles.map(rol => (
+        <div class="flex items-center justify-between py-4 border-b">
+          <div class="flex-1">
+            <h3 class="text-sm font-medium text-gray-900">{rol.nombre}</h3>
+            <p class="text-sm text-gray-500">{rol.descripcion}</p>
+            <span class="text-xs text-gray-500">{rol.usuarios} usuarios</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <button class="text-sm text-blue-600 hover:text-blue-800">Editar</button>
+            <button class="text-sm text-red-600 hover:text-red-800">Eliminar</button>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Matriz de Permisos -->
+  <div class="bg-white rounded-lg shadow-md p-6">
+    <h2 class="text-lg font-medium text-gray-900 mb-4">Permisos por Módulo</h2>
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead>
+          <tr>
+            <th class="text-left text-sm font-medium text-gray-500 py-3">Módulo</th>
+            {roles.map(rol => (
+              <th class="text-center text-sm font-medium text-gray-500 py-3">{rol.nombre}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {modulos.map(modulo => (
+            <tr class="border-t">
+              <td class="py-4">
+                <span class="text-sm font-medium text-gray-900">{modulo.nombre}</span>
+              </td>
+              {roles.map(() => (
+                <td class="px-4 py-4 text-center">
+                  <select class="text-sm rounded-lg border-gray-300">
+                    <option value="">Sin acceso</option>
+                    {modulo.permisos.map(permiso => (
+                      <option value={permiso}>{permiso}</option>
+                    ))}
+                  </select>
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
