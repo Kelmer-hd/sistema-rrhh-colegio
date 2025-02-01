@@ -1,70 +1,75 @@
 ---
 // src/pages/gestion-personal/index.astro
+import "../../styles/global.css"
 import Layout from '../../layouts/Layout.astro';
-import TablaEmpleados from '../../components/TablaEmpleados.astro';
-import Evaluaciones from '../../components/Evaluaciones.astro';
-import FormularioEmpleado from '../../components/FormularioEmpleado.astro';
+import TablaEmpleados from '../../components/gestion-personal/TablaEmpleados.astro';
+import Evaluaciones from '../../components/gestion-personal/Evaluaciones.astro';
+import FormularioEmpleado from '../../components/gestion-personal/FormularioEmpleado.astro';
+import Dashboard from '../../components/gestion-personal/Dashboard.astro';
 
 // Estado inicial de las pestañas
-// Definir el tipo para las pestañas
 type Tab = {
-  id: 'empleados' | 'evaluaciones' | 'postulantes';
+  id: 'dashboard' | 'empleados' | 'evaluaciones' | 'postulantes';
   nombre: string;
   activo: boolean;
 };
 
 // Estado inicial de las pestañas
 const tabs: Tab[] = [
-  { id: 'empleados', nombre: 'Empleados', activo: true },
+  { id: 'dashboard', nombre: 'Dashboard', activo: true },
+  { id: 'empleados', nombre: 'Empleados', activo: false },
   { id: 'evaluaciones', nombre: 'Evaluaciones', activo: false },
   { id: 'postulantes', nombre: 'Postulantes', activo: false }
 ];
 ---
 
 <Layout>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-6">Gestión de Personal</h1>
-    
-    <!-- Navegación por pestañas -->
-    <div class="border-b border-gray-200 mb-6">
-      <nav class="-mb-px flex space-x-8" aria-label="Tabs">
-        {tabs.map(tab => (
-          <button
-            id={`tab-${tab.id}`}
-            class={`py-4 px-1 border-b-2 font-medium text-sm
-              ${tab.activo 
-                ? 'border-indigo-500 text-indigo-600'
-                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
-          >
-            {tab.nombre}
-          </button>
-        ))}
-      </nav>
-    </div>
-
-    <!-- Contenido de las pestañas -->
-    <div id="tab-content-empleados" class="tab-content">
-      <TablaEmpleados />
-    </div>
-
-    <div id="tab-content-evaluaciones" class="tab-content hidden">
-      <Evaluaciones />
-    </div>
-
-    <div id="tab-content-postulantes" class="tab-content hidden">
-      <!-- Aquí irá el componente de postulantes cuando lo creemos -->
-      <div class="bg-white shadow-md rounded-lg p-6">
-        <h2 class="text-xl font-semibold text-gray-800">Postulantes</h2>
-        <p class="text-gray-600 mt-2">Sección en desarrollo...</p>
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <h1 class="text-3xl font-bold text-gray-900 mb-6">Gestión de Personal</h1>
+      
+      <!-- Navegación por pestañas -->
+      <div class="border-b border-gray-200 mb-6">
+        <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+          {tabs.map(tab => (
+            <button
+              id={`tab-${tab.id}`}
+              class={`py-4 px-1 border-b-2 font-medium text-sm
+                ${tab.activo 
+                  ? 'border-indigo-500 text-indigo-600'
+                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+            >
+              {tab.nombre}
+            </button>
+          ))}
+        </nav>
+      </div>
+  
+      <!-- Contenido de las pestañas -->
+      <div id="tab-content-dashboard" class="tab-content">
+        <Dashboard />
+      </div>
+  
+      <div id="tab-content-empleados" class="tab-content hidden">
+        <TablaEmpleados />
+      </div>
+  
+      <div id="tab-content-evaluaciones" class="tab-content hidden">
+        <Evaluaciones />
+      </div>
+  
+      <div id="tab-content-postulantes" class="tab-content hidden">
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800">Postulantes</h2>
+          <p class="text-gray-600 mt-2">Sección en desarrollo...</p>
+        </div>
+      </div>
+  
+      <!-- Modal del formulario (inicialmente oculto) -->
+      <div id="modal-container" class="hidden">
+        <FormularioEmpleado />
       </div>
     </div>
-
-    <!-- Modal del formulario (inicialmente oculto) -->
-    <div id="modal-container" class="hidden">
-      <FormularioEmpleado />
-    </div>
-  </div>
-</Layout>
+  </Layout>
 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -74,7 +79,7 @@ const tabs: Tab[] = [
       const modalContainer = document.getElementById('modal-container');
   
       // Función para mostrar una pestaña con tipo explícito
-      function showTab(tabId: 'empleados' | 'evaluaciones' | 'postulantes'): void {
+      function showTab(tabId: 'dashboard' | 'empleados' | 'evaluaciones' | 'postulantes'): void {
         // Ocultar todos los contenidos
         tabContents.forEach(content => {
           content.classList.add('hidden');

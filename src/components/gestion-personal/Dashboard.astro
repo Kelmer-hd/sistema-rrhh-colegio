@@ -1,0 +1,113 @@
+---
+// src/components/gestion-personal/Dashboard.astro
+import "../../styles/global.css";
+interface EstadisticaCard {
+  titulo: string;
+  valor: string | number;
+  cambio: number;
+  icono: string;
+}
+
+const estadisticas: EstadisticaCard[] = [
+  {
+    titulo: "Total Empleados",
+    valor: 145,
+    cambio: 12,
+    icono: "👥"
+  },
+  {
+    titulo: "Evaluaciones Pendientes",
+    valor: 8,
+    cambio: -3,
+    icono: "📋"
+  },
+  {
+    titulo: "Postulantes Activos",
+    valor: 24,
+    cambio: 5,
+    icono: "📝"
+  },
+  {
+    titulo: "Capacitaciones del Mes",
+    valor: 6,
+    cambio: 2,
+    icono: "📚"
+  }
+];
+
+const departamentos = [
+  { nombre: "Secundaria", empleados: 45 },
+  { nombre: "Primaria", empleados: 38 },
+  { nombre: "Administración", empleados: 15 },
+  { nombre: "Dirección", empleados: 5 }
+];
+---
+
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+  {estadisticas.map(stat => (
+    <div class="bg-white rounded-lg shadow p-6">
+      <div class="flex items-center justify-between">
+        <span class="text-2xl">{stat.icono}</span>
+        <span class={`text-sm font-semibold ${stat.cambio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+          {stat.cambio > 0 ? '+' : ''}{stat.cambio}%
+        </span>
+      </div>
+      <h3 class="text-lg font-semibold text-gray-800 mt-4">{stat.titulo}</h3>
+      <p class="text-3xl font-bold text-gray-900 mt-2">{stat.valor}</p>
+    </div>
+  ))}
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+  <!-- Gráfico de Distribución por Departamento -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Distribución por Departamento</h3>
+    <div class="space-y-4">
+      {departamentos.map(dept => (
+        <div>
+          <div class="flex justify-between mb-1">
+            <span class="text-sm font-medium text-gray-700">{dept.nombre}</span>
+            <span class="text-sm font-medium text-gray-700">{dept.empleados}</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2.5">
+            <div class="bg-blue-600 h-2.5 rounded-full" style={`width: ${(dept.empleados / 45) * 100}%`}></div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  <!-- Actividad Reciente -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <h3 class="text-lg font-semibold text-gray-800 mb-4">Actividad Reciente</h3>
+    <div class="space-y-4">
+      <div class="flex items-center gap-4 pb-4 border-b">
+        <div class="bg-green-100 p-2 rounded-full">
+          <span class="text-green-600">✓</span>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-900">Nueva contratación: Ana López</p>
+          <p class="text-sm text-gray-500">Hace 2 horas</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 pb-4 border-b">
+        <div class="bg-blue-100 p-2 rounded-full">
+          <span class="text-blue-600">↺</span>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-900">Evaluación completada: Juan Pérez</p>
+          <p class="text-sm text-gray-500">Hace 3 horas</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-4">
+        <div class="bg-yellow-100 p-2 rounded-full">
+          <span class="text-yellow-600">⚠</span>
+        </div>
+        <div>
+          <p class="text-sm font-medium text-gray-900">Capacitación pendiente: Desarrollo Profesional</p>
+          <p class="text-sm text-gray-500">Hace 5 horas</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
