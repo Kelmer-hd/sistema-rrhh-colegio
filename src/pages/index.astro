@@ -1,46 +1,183 @@
 ---
+// src/pages/index.astro
 import Layout from '../layouts/Layout.astro';
-import DashboardCard from '../components/DashboardCard.astro';
 import "../styles/global.css";
+
+interface EstadisticaCard {
+  titulo: string;
+  valor: string | number;
+  incremento: number;
+  icono: string;
+  color: string;
+}
+
+const estadisticas: EstadisticaCard[] = [
+  {
+    titulo: "Total Empleados",
+    valor: 145,
+    incremento: 12,
+    icono: "👥",
+    color: "blue"
+  },
+  {
+    titulo: "Capacitaciones Activas",
+    valor: 8,
+    incremento: 3,
+    icono: "📚",
+    color: "green"
+  },
+  {
+    titulo: "Evaluaciones Pendientes",
+    valor: 12,
+    incremento: -2,
+    icono: "📋",
+    color: "yellow"
+  },
+  {
+    titulo: "Eventos Próximos",
+    valor: 5,
+    incremento: 1,
+    icono: "📅",
+    color: "purple"
+  }
+];
+
+const modulos = [
+  {
+    titulo: "Gestión de Personal",
+    descripcion: "Administra empleados, evaluaciones y postulantes",
+    enlace: "/gestion-personal",
+    icono: "👥",
+    color: "bg-blue-100 text-blue-800",
+    hover: "hover:bg-blue-50"
+  },
+  {
+    titulo: "Desarrollo Profesional",
+    descripcion: "Gestiona capacitaciones y certificaciones",
+    enlace: "/desarrollo-profesional",
+    icono: "📚",
+    color: "bg-green-100 text-green-800",
+    hover: "hover:bg-green-50"
+  },
+  {
+    titulo: "Calendario",
+    descripcion: "Organiza eventos y reuniones",
+    enlace: "/calendario",
+    icono: "📅",
+    color: "bg-purple-100 text-purple-800",
+    hover: "hover:bg-purple-50"
+  },
+  {
+    titulo: "Nóminas",
+    descripcion: "Gestión de pagos, beneficios y reportes",
+    enlace: "/nominas",
+    icono: "💰",
+    color: "bg-yellow-100 text-yellow-800",
+    hover: "hover:bg-yellow-50"
+  },
+  {
+    titulo: "Evaluaciones",
+    descripcion: "Sistema de evaluación y desempeño",
+    enlace: "/evaluaciones",
+    icono: "🎯",
+    color: "bg-red-100 text-red-800",
+    hover: "hover:bg-red-50"
+  },
+  {
+    titulo: "Configuración",
+    descripcion: "Configuración del sistema, roles y permisos",
+    enlace: "/configuracion",
+    icono: "⚙️",
+    color: "bg-gray-100 text-gray-800",
+    hover: "hover:bg-gray-50"
+  }
+];
+
+const actividadReciente = [
+  {
+    tipo: "empleado",
+    mensaje: "Nuevo empleado registrado: Juan Pérez",
+    tiempo: "Hace 2 horas",
+    icono: "👤"
+  },
+  {
+    tipo: "evaluacion",
+    mensaje: "Evaluación completada: María García",
+    tiempo: "Hace 3 horas",
+    icono: "✅"
+  },
+  {
+    tipo: "capacitacion",
+    mensaje: "Nueva capacitación programada: Excel Avanzado",
+    tiempo: "Hace 5 horas",
+    icono: "📚"
+  }
+];
 ---
 
 <Layout>
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <h1 class="text-3xl font-bold text-gray-900 mb-8">Dashboard SIGRH-EDU</h1>
-    
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      <DashboardCard 
-        titulo="Gestión de Personal"
-        descripcion="Administra empleados, evaluaciones y postulantes"
-        enlace="/gestion-personal"
-        icono="👥"
-      />
-      <DashboardCard 
-        titulo="Desarrollo Profesional"
-        descripcion="Gestiona capacitaciones y certificaciones"
-        enlace="/desarrollo-profesional"
-        icono="📚"
-      />
-      <DashboardCard 
-        titulo="Calendario"
-        descripcion="Organiza eventos y reuniones"
-        enlace="/calendario"
-        icono="📅"
-      />
+  <div class="min-h-screen bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <!-- Header -->
+      <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-900">SIGRH-EDU</h1>
+        <p class="mt-2 text-gray-600">Sistema Integrado de Gestión de Recursos Humanos Educativo</p>
+      </div>
 
-	  <DashboardCard 
-        titulo="Nominas"
-        descripcion="Gestion de Pagos, Beneficios y Reportes"
-        enlace="/nominas"
-        icono="📅"
-      />
+      <!-- Estadísticas -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+        {estadisticas.map(stat => (
+          <div class="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow duration-300">
+            <div class="flex justify-between items-start">
+              <div class="text-2xl">{stat.icono}</div>
+              <div class={`text-sm font-semibold ${stat.incremento >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                {stat.incremento > 0 ? '+' : ''}{stat.incremento}%
+              </div>
+            </div>
+            <h3 class="text-lg font-semibold text-gray-800 mt-4">{stat.titulo}</h3>
+            <p class="text-3xl font-bold text-gray-900 mt-2">{stat.valor}</p>
+          </div>
+        ))}
+      </div>
 
-	  <DashboardCard 
-        titulo="Roles y Permisos"
-        descripcion="Gestion roles y permisos"
-        enlace="/configuracion"
-        icono="📅"
-      />
+      <!-- Módulos del Sistema -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        {modulos.map(modulo => (
+          <a 
+            href={modulo.enlace}
+            class="block transform transition-all duration-300 hover:scale-105"
+          >
+            <div class={`p-6 rounded-lg shadow-md ${modulo.color} ${modulo.hover}`}>
+              <div class="flex items-center">
+                <span class="text-3xl">{modulo.icono}</span>
+                <h3 class="ml-4 text-lg font-semibold">{modulo.titulo}</h3>
+              </div>
+              <p class="mt-4 text-sm">{modulo.descripcion}</p>
+              <div class="mt-4 flex justify-end">
+                <span class="text-sm font-medium">
+                  Acceder →
+                </span>
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <!-- Actividad Reciente -->
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Actividad Reciente</h2>
+        <div class="space-y-4">
+          {actividadReciente.map(actividad => (
+            <div class="flex items-center p-4 border rounded-lg">
+              <span class="text-2xl mr-4">{actividad.icono}</span>
+              <div class="flex-1">
+                <p class="text-sm text-gray-900">{actividad.mensaje}</p>
+                <p class="text-xs text-gray-500">{actividad.tiempo}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   </div>
 </Layout>
