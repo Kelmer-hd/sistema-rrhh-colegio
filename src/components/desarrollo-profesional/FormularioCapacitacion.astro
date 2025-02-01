@@ -1,0 +1,130 @@
+---
+// src/components/desarrollo-profesional/FormularioCapacitacion.astro
+---
+
+<div class="fixed inset-0 bg-gray-900/50 backdrop-blur-sm overflow-y-auto h-full w-full flex items-center justify-center" id="modalCapacitacion">
+    <div class="relative w-full max-w-2xl mx-4">
+      <div class="bg-white rounded-xl shadow-2xl">
+        <div class="px-6 py-4 border-b border-gray-100 flex justify-between items-center">
+          <h3 class="text-lg font-semibold text-gray-900">Nueva Capacitación</h3>
+          <button id="btnCerrarModal" class="text-gray-400 hover:text-gray-500">
+            <span class="sr-only">Cerrar</span>
+            <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+        </div>
+  
+        <form id="capacitacionForm" class="p-6">
+          <div class="grid grid-cols-1 gap-6">
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Título</label>
+              <input
+                type="text"
+                name="titulo"
+                required
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+  
+            <div>
+              <label class="block text-sm font-medium text-gray-700">Descripción</label>
+              <textarea
+                name="descripcion"
+                rows="3"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              ></textarea>
+            </div>
+  
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Fecha de Inicio</label>
+                <input
+                  type="date"
+                  name="fechaInicio"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+  
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Fecha de Fin</label>
+                <input
+                  type="date"
+                  name="fechaFin"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+            </div>
+  
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Instructor</label>
+                <input
+                  type="text"
+                  name="instructor"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                />
+              </div>
+  
+              <div>
+                <label class="block text-sm font-medium text-gray-700">Modalidad</label>
+                <select
+                  name="modalidad"
+                  required
+                  class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                >
+                  <option value="presencial">Presencial</option>
+                  <option value="virtual">Virtual</option>
+                  <option value="hibrido">Híbrido</option>
+                </select>
+              </div>
+            </div>
+          </div>
+  
+          <div class="mt-6 flex items-center justify-end gap-x-4">
+            <button
+              type="button"
+              id="btnCancelar"
+              class="text-sm font-semibold text-gray-900 hover:text-gray-700"
+            >
+              Cancelar
+            </button>
+            <button
+              type="submit"
+              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Guardar Capacitación
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const modal = document.getElementById('modalCapacitacion');
+      const form = document.getElementById('capacitacionForm');
+      const btnCerrar = document.getElementById('btnCerrarModal');
+      const btnCancelar = document.getElementById('btnCancelar');
+  
+      function cerrarModal() {
+        modal?.classList.add('hidden');
+      }
+  
+      form?.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const formData = new FormData(e.target as HTMLFormElement);
+        console.log(Object.fromEntries(formData));
+        alert('Capacitación guardada');
+        cerrarModal();
+      });
+  
+      [btnCerrar, btnCancelar].forEach(btn => {
+        btn?.addEventListener('click', cerrarModal);
+      });
+    });
+  </script>

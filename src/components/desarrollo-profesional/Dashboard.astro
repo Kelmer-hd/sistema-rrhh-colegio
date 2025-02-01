@@ -1,0 +1,143 @@
+---
+// src/components/desarrollo-profesional/Dashboard.astro
+
+interface EstadisticaCard {
+  titulo: string;
+  valor: string | number;
+  cambio: number;
+  icono: string;
+  color: string;
+}
+
+const estadisticas: EstadisticaCard[] = [
+  {
+    titulo: "Capacitaciones Activas",
+    valor: 12,
+    cambio: 8,
+    icono: "📚",
+    color: "blue"
+  },
+  {
+    titulo: "Empleados en Formación",
+    valor: 45,
+    cambio: 12,
+    icono: "👥",
+    color: "green"
+  },
+  {
+    titulo: "Certificaciones Obtenidas",
+    valor: 28,
+    cambio: 5,
+    icono: "🎓",
+    color: "purple"
+  },
+  {
+    titulo: "Horas de Capacitación",
+    valor: 156,
+    cambio: -3,
+    icono: "⏱️",
+    color: "orange"
+  }
+];
+
+const capacitacionesProximas = [
+  {
+    titulo: "Desarrollo de Liderazgo",
+    fecha: "2024-02-15",
+    instructor: "Ana Martínez",
+    participantes: 12,
+    estado: "programada"
+  },
+  {
+    titulo: "Excel Avanzado",
+    fecha: "2024-02-18",
+    instructor: "Carlos López",
+    participantes: 15,
+    estado: "programada"
+  },
+  {
+    titulo: "Gestión del Tiempo",
+    fecha: "2024-02-20",
+    instructor: "María García",
+    participantes: 8,
+    estado: "programada"
+  }
+];
+---
+
+<div class="space-y-6">
+  <!-- Estadísticas -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+    {estadisticas.map(stat => (
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <div class="flex items-center justify-between">
+          <span class="text-2xl">{stat.icono}</span>
+          <span class={`text-sm font-semibold ${stat.cambio >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {stat.cambio > 0 ? '+' : ''}{stat.cambio}%
+          </span>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-800 mt-4">{stat.titulo}</h3>
+        <p class="text-3xl font-bold text-gray-900 mt-2">{stat.valor}</p>
+      </div>
+    ))}
+  </div>
+
+  <!-- Gráficos y Tablas -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Gráfico de Progreso -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Progreso de Capacitaciones</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between mb-1">
+            <span>Desarrollo de Liderazgo</span>
+            <span>75%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1">
+            <span>Excel Avanzado</span>
+            <span>45%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 45%"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between mb-1">
+            <span>Gestión del Tiempo</span>
+            <span>30%</span>
+          </div>
+          <div class="w-full bg-gray-200 rounded-full h-2">
+            <div class="bg-blue-600 h-2 rounded-full" style="width: 30%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Próximas Capacitaciones -->
+    <div class="bg-white rounded-lg shadow-md p-6">
+      <h3 class="text-lg font-semibold text-gray-800 mb-4">Próximas Capacitaciones</h3>
+      <div class="space-y-4">
+        {capacitacionesProximas.map(cap => (
+          <div class="flex items-center p-4 border rounded-lg">
+            <div class="flex-1">
+              <h4 class="font-medium text-gray-900">{cap.titulo}</h4>
+              <p class="text-sm text-gray-500">
+                {new Date(cap.fecha).toLocaleDateString()} • {cap.instructor}
+              </p>
+            </div>
+            <div class="text-right">
+              <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                {cap.participantes} participantes
+              </span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+---
+// src/pages/desarrollo-profesional/index.astro
+import "../../styles/global.css";
+import Layout from '../../layouts/Layout.astro';
+import Dashboard from '../../components/desarrollo-profesional/Dashboard.astro';
+import ListaCapacitaciones from '../../components/desarrollo-profesional/ListaCapacitaciones.astro';
+import FormularioCapacitacion from '../../components/desarrollo-profesional/FormularioCapacitacion.astro';
+
+type Tab = {
+  id: 'dashboard' | 'capacitaciones' | 'reportes';
+  nombre: string;
+  icono: string;
+  activo: boolean;
+};
+
+const tabs: Tab[] = [
+  { 
+    id: 'dashboard', 
+    nombre: 'Dashboard', 
+    icono: '📊',
+    activo: true 
+  },
+  { 
+    id: 'capacitaciones', 
+    nombre: 'Capacitaciones', 
+    icono: '📚',
+    activo: false 
+  },
+  { 
+    id: 'reportes', 
+    nombre: 'Reportes y Certificaciones', 
+    icono: '📋',
+    activo: false 
+  }
+];
+---
+
+<Layout>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Desarrollo Profesional</h1>
+      <button id="btnNuevaCapacitacion" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 flex items-center gap-2">
+        <span>+</span> Nueva Capacitación
+      </button>
+    </div>
+    
+    <!-- Navegación por pestañas -->
+    <div class="border-b border-gray-200 mb-6">
+      <nav class="-mb-px flex space-x-8" aria-label="Tabs">
+        {tabs.map(tab => (
+          <button
+            id={`tab-${tab.id}`}
+            class={`py-4 px-1 border-b-2 font-medium text-sm inline-flex items-center gap-2
+              ${tab.activo 
+                ? 'border-blue-500 text-blue-600'
+                : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'}`}
+          >
+            <span>{tab.icono}</span>
+            {tab.nombre}
+          </button>
+        ))}
+      </nav>
+    </div>
+
+    <!-- Contenido de las pestañas -->
+    <div id="tab-content-dashboard" class="tab-content">
+      <Dashboard />
+    </div>
+
+    <div id="tab-content-capacitaciones" class="tab-content hidden">
+      <ListaCapacitaciones />
+    </div>
+
+    <div id="tab-content-reportes" class="tab-content hidden">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Sección de Certificaciones -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Certificaciones</h2>
+          <div class="space-y-4">
+            {[1,2,3].map(() => (
+              <div class="border rounded-lg p-4">
+                <div class="flex justify-between items-start">
+                  <div>
+                    <h3 class="font-medium text-gray-900">Certificación en Excel Avanzado</h3>
+                    <p class="text-sm text-gray-500">Completado: 15/01/2024</p>
+                    <p class="text-sm text-gray-500">Por: Juan Pérez</p>
+                  </div>
+                  <span class="px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">
+                    Verificado
+                  </span>
+                </div>
+              </div>
+            ))}
+            <button class="w-full py-2 px-4 border border-gray-300 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50">
+              Ver todas las certificaciones
+            </button>
+          </div>
+        </div>
+
+        <!-- Sección de Reportes -->
+        <div class="bg-white shadow-md rounded-lg p-6">
+          <h2 class="text-xl font-semibold text-gray-800 mb-4">Reportes</h2>
+          <div class="space-y-4">
+            <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-medium text-gray-900">Progreso de Capacitaciones</h3>
+              <p class="text-sm text-gray-500">Reporte mensual de avance</p>
+            </div>
+            <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-medium text-gray-900">Certificaciones por Departamento</h3>
+              <p class="text-sm text-gray-500">Distribución y estadísticas</p>
+            </div>
+            <div class="border rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
+              <h3 class="font-medium text-gray-900">Horas de Capacitación</h3>
+              <p class="text-sm text-gray-500">Total por empleado y área</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal de Capacitación -->
+    <div id="modal-container" class="hidden">
+      <FormularioCapacitacion />
+    </div>
+  </div>
+</Layout>
+
+<script>
+  type TabId = 'dashboard' | 'capacitaciones' | 'reportes';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const tabButtons = document.querySelectorAll<HTMLButtonElement>('button[id^="tab-"]');
+    const tabContents = document.querySelectorAll<HTMLElement>('.tab-content');
+    const modalContainer = document.getElementById('modal-container');
+    const btnNuevaCapacitacion = document.getElementById('btnNuevaCapacitacion');
+
+    function showTab(tabId: TabId): void {
+      tabContents.forEach(content => {
+        content.classList.add('hidden');
+      });
+
+      tabButtons.forEach(button => {
+        button.classList.remove('border-blue-500', 'text-blue-600');
+        button.classList.add('border-transparent', 'text-gray-500');
+      });
+
+      const selectedContent = document.getElementById(`tab-content-${tabId}`);
+      selectedContent?.classList.remove('hidden');
+
+      const selectedButton = document.getElementById(`tab-${tabId}`);
+      selectedButton?.classList.add('border-blue-500', 'text-blue-600');
+      selectedButton?.classList.remove('border-transparent', 'text-gray-500');
+    }
+
+    tabButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        const tabId = button.id.replace('tab-', '') as TabId;
+        showTab(tabId);
+      });
+    });
+
+    btnNuevaCapacitacion?.addEventListener('click', () => {
+      modalContainer?.classList.remove('hidden');
+    });
+  });
+</script>
